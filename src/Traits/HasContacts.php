@@ -27,7 +27,7 @@ trait HasContacts
                 return;
             }
 
-            $model->contacts()->delete();
+            $model->contacts()->detach();
         });
     }
 
@@ -50,7 +50,7 @@ trait HasContacts
         return $this->morphToMany(
             config('contacts.models.contact'),
             'model',
-            config('contacts.table_names.model_has_contacs'),
+            config('contacts.table_names.model_has_contacts'),
             config('contacts.column_names.model_morph_key'),
             'contact_id'
         );
@@ -89,12 +89,12 @@ trait HasContacts
             $class = \get_class($model);
 
             $class::saved(
-                function ($object) use ($roles, $model) {
+                function ($object) use ($contacts, $model) {
                     static $modelLastFiredOn;
                     if ($modelLastFiredOn !== null && $modelLastFiredOn === $model) {
                         return;
                     }
-                    $object->contacts()->sync($roles, false);
+                    $object->contacts()->sync($contacts, false);
                     $object->load('contacts');
                     $modelLastFiredOn = $object;
                 });
@@ -153,8 +153,11 @@ trait HasContacts
     public function addContact(array $attributes)
     {
         $attributes = $this->loadContactAttributes($attributes);
+        
+        $contact = $this->getContactClass();
+        $contact = $contact::create($attributes);
 
-        return $this->contacts()->create($attributes);
+        return $this->assignContact($contact);
     }
 
     /**
@@ -337,7 +340,7 @@ trait HasContacts
         $contactClass = $this->getContactClass();
 
         if (is_numeric($contact)) {
-            return $contactClass->findById($contact);
+            return $contactClass::findById($contact);
         }
 
         return $contact;

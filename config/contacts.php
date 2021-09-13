@@ -11,13 +11,6 @@ return [
 
         'contact' => Chuckcms\Contacts\Models\Contact::class,
 
-        /*
-         * Define the table name to use when using the 'HasContacts' trait for
-         * retrieving the models linked to the contacts.
-         */
-
-        'model_has_contacts' => 'model_has_contacts',
-
     ],
 
     'table_names' => [
@@ -27,6 +20,13 @@ return [
          */
 
         'contacts' => 'contacts',
+
+        /*
+         * Define the table name to use when using the 'HasContacts' trait for
+         * retrieving the models linked to the contacts.
+         */
+
+        'model_has_contacts' => 'model_has_contacts',
 
     ],
 
