@@ -1,0 +1,71 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateContactsTables extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $tableNames = config('contacts.table_names');
+        $columnNames = config('contacts.column_names');
+
+        Schema::create($tableNames['contacts'], function (Blueprint $table) {
+            $table->increments('id');
+            
+            $table->string('type', 20)->default('default');
+            $table->string('gender', 1)->nullable();
+
+            $table->string('first_name',  60)->nullable();
+            $table->string('middle_name', 60)->nullable();
+            $table->string('last_name',   60)->nullable();
+
+            $table->string('phone',    32)->nullable();
+            $table->string('mobile',   32)->nullable();
+            $table->string('fax',      32)->nullable();
+            $table->string('email',    90)->nullable();
+            $table->string('website', 140)->nullable();
+            
+            $table->boolean('is_public')->default(false);
+            $table->boolean('is_primary')->default(false);
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create($tableNames['model_has_contacts'], function (Blueprint $table) use ($tableNames, $columnNames) {
+            $table->unsignedInteger('contact_id');
+
+            $table->string('model_type');
+            $table->unsignedBigInteger($columnNames['model_morph_key']);
+            $table->index([$columnNames['model_morph_key'], 'model_type', ], 'model_has_contacts_model_id_model_type_index');
+
+            $table->foreign('contact_id')
+                ->references('id')
+                ->on($tableNames['contacts'])
+                ->onDelete('cascade');
+
+            $table->primary(['contact_id', $columnNames['model_morph_key'], 'model_type'],
+                    'model_has_contacts_contact_model_type_primary');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        $tableNames = config('contacts.table_names');
+
+        Schema::drop($tableNames['model_has_contacts']);
+        Schema::drop($tableNames['contacts']);
+    }
+}

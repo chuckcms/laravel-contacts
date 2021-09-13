@@ -1,0 +1,38 @@
+{
+    "name": "chuckcms/laravel-contacts",
+    "description": "An easy way for attaching contacts to Eloquent models in Laravel.",
+    "keywords": ["laravel", "contacts", "chuckcms", "module"],
+    "homepage": "https://github.com/chuckcms/laravel-contacts",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Karel Brijs",
+            "email": "karel@chuck.be",
+            "homepage": "https://chuck.be",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : "^7.2.5|^8.0",
+        "illuminate/auth": "^6.0|^7.0|^8.0",
+        "illuminate/container": "^6.0|^7.0|^8.0",
+        "illuminate/contracts": "^6.0|^7.0|^8.0",
+        "illuminate/database": "^6.0|^7.0|^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Chuckcms\\Contacts\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Chuckcms\\Contacts\\ContactsServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "minimum-stability": "dev"
+}
