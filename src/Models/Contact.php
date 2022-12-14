@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contact extends Model implements ContactContract
 {
-    use HasAddresses,SoftDeletes;
+    use HasAddresses, SoftDeletes;
 
     protected $guarded = ['id'];
 
