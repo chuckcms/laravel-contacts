@@ -2,6 +2,7 @@
 
 namespace Chuckcms\Contacts\Models;
 
+use Chuckcms\Addresses\Traits\HasAddresses;
 use Chuckcms\Contacts\Contracts\Contact as ContactContract;
 use Chuckcms\Contacts\Exceptions\ContactDoesNotExist;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contact extends Model implements ContactContract
 {
-    use SoftDeletes;
+    use HasAddresses, SoftDeletes;
 
     protected $guarded = ['id'];
 
